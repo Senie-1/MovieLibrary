@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieLibrary.Models.Enums;
 
 namespace MovieLibrary.Controllers
 {
@@ -6,7 +7,7 @@ namespace MovieLibrary.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public UserMoviesController(ApplicationDbContext context)
+        public WishlistController(ApplicationDbContext context)
         {
             _context = context;
         }
