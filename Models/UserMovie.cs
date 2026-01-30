@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MovieLibrary.Enum;
+
 namespace MovieLibrary.Models
 {
     public class UserMovie
@@ -10,12 +11,12 @@ namespace MovieLibrary.Models
         public string UserId { get; set; }= null!;
         public IdentityUser User { get; set; } = null!;
 
-
+        public WatchStatus WatchStatus { get; set; }
 
         public int MovieId { get; set; }
         public Movie Movie { get; set; } = null!;
 
-        public WatchStatus Status { get; set; }
+       
     }
 
 }
