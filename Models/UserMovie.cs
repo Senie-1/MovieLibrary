@@ -7,13 +7,13 @@ namespace MovieLibrary.Models
         public int Id { get; set; }
 
     
-        public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public string UserId { get; set; }= null!;
+        public IdentityUser User { get; set; } = null!;
 
-       
+
 
         public int MovieId { get; set; }
-        public Movie Movie { get; set; }
+        public Movie Movie { get; set; } = null!;
 
         public WatchStatus Status { get; set; }
     }

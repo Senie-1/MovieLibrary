@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using MovieLibrary.Models;
-using System.Data.Entity;
-using Microsoft.EntityFrameworkCore
-
-
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace MovieLibrary.Data
 {
     public class ApplicationDbContext : IdentityDbContext
