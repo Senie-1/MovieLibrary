@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MovieLibrary.Enum;
+using MovieLibrary.Models.Enums;
 
 namespace MovieLibrary.Models
 {

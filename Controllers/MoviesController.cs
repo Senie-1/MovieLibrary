@@ -25,7 +25,7 @@ namespace MovieLibrary.Controllers
         {
             var movie = await _context.Movies
                 .Include(m => m.Reviews)
-                .FirstOrDeafault(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (movie == null)
             {
