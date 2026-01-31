@@ -1,0 +1,12 @@
+﻿@model MovieLibrary.Models.Movie
+
+<h2>Edit Movie</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input asp-for="Title" />
+    <textarea asp-for="Description"></textarea>
+    <button type="submit">Save</button>
+</form>
+
+<a asp-action="Index">Back</a>

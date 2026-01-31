@@ -1,0 +1,16 @@
+﻿@model MovieLibrary.Models.Movie
+
+<h2>@Model.Title</h2>
+
+<p>@Model.Description</p>
+
+<h3>Reviews</h3>
+
+<ul>
+    @foreach (var review in Model.Reviews)
+    {
+        <li>@review.Content</li>
+    }
+</ul>
+
+<a asp-action="Index">Back</a>

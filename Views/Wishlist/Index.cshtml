@@ -1,0 +1,10 @@
+﻿@model IEnumerable<MovieLibrary.Models.UserMovie>
+
+<h2>My Wishlist</h2>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@item.Movie.Title - @item.WatchStatus</li>
+    }
+</ul>

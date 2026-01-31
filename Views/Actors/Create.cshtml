@@ -1,0 +1,10 @@
+﻿@model MovieLibrary.Models.Actor
+
+<h2>Create Actor</h2>
+
+<form asp-action="Create" method="post">
+    <input asp-for="FullName" />
+    <button type="submit">Save</button>
+</form>
+
+<a asp-action="Index">Back</a>
