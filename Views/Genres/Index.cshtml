@@ -1,10 +1,28 @@
 ﻿@model IEnumerable<MovieLibrary.Models.Genre>
 
-<h2>Genres</h2>
+@{
+    ViewData["Title"] = "Genres";
+}
 
-<ul>
-    @foreach (var genre in Model)
-    {
-        <li>@genre.Name</li>
-    }
-</ul>
+<a asp-action="Create" class="btn btn-primary mb-3">Create Genre</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
