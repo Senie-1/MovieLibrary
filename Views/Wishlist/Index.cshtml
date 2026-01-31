@@ -1,10 +1,23 @@
 ﻿@model IEnumerable<MovieLibrary.Models.UserMovie>
 
-<h2>My Wishlist</h2>
+@{
+    ViewData["Title"] = "Wishlist";
+}
 
-<ul>
-    @foreach (var item in Model)
-    {
-        <li>@item.Movie.Title - @item.WatchStatus</li>
-    }
-</ul>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Movie</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Movie.Title</td>
+                <td>@item.WatchStatus</td>
+            </tr>
+        }
+    </tbody>
+</table>
