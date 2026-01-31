@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
 using MovieLibrary.Models.Enums;
 
 namespace MovieLibrary.Controllers
@@ -11,11 +11,16 @@ namespace MovieLibrary.Controllers
         {
             _context = context;
         }
+
+  
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserMovies.Include(x => x.Movie).ToListAsync());
+            return View(await _context.UserMovies
+                .Include(um => um.Movie)
+                .ToListAsync());
         }
 
+    
         [HttpPost]
         public async Task<IActionResult> Add(int movieId, WatchStatus status)
         {
@@ -28,7 +33,34 @@ namespace MovieLibrary.Controllers
             _context.UserMovies.Add(item);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
+        }
+
+       
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, WatchStatus status)
+        {
+            var item = await _context.UserMovies.FindAsync(id);
+            if (item == null)
+                return NotFound();
+
+            item.WatchStatus = status;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+      
+        public async Task<IActionResult> Delete(int id)
+        {
+            var item = await _context.UserMovies.FindAsync(id);
+            if (item == null)
+                return NotFound();
+
+            _context.UserMovies.Remove(item);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
