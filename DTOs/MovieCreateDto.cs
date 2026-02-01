@@ -1,0 +1,11 @@
+﻿namespace MovieLibrary.DTOs
+{
+    public class MovieCreateDto
+    {
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public int Year { get; set; }
+        public string PosterUrl { get; set; } = null!;
+   
+    }
+}
