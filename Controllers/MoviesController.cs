@@ -63,7 +63,7 @@ namespace MovieLibrary.Controllers
                         {
                             Id = r.Id,
                             Rating = r.Rating,
-                            Comment = r.Comment
+                            Comment = r.Review
                         })
                         .ToList()
                 })
@@ -96,8 +96,8 @@ namespace MovieLibrary.Controllers
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                Year = dto.Year,
-                ImageUrl = dto.ImageUrl,
+                ReleaseYear = dto.Year,
+                ImageUrl = dto.PosterUrl,
                 Rating = dto.Rating
             };
 
