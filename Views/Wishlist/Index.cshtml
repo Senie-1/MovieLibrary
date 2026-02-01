@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WishListDto>
+﻿@using MovieLibrary.DTOs
+@model IEnumerable<WishlistDto>
 
 @{
     ViewData["Title"] = "Wishlist";
@@ -11,7 +12,7 @@
     {
         <li class="list-group-item d-flex justify-content-between">
             <span>@item.MovieTitle</span>
-            <span class="badge bg-dark">@item.Status</span>
+            <span class="badge bg-dark">@item.WatchStatus</span>
         </li>
     }
 </ul>

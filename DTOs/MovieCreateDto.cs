@@ -6,6 +6,7 @@
         public string Description { get; set; } = null!;
         public int Year { get; set; }
         public string PosterUrl { get; set; } = null!;
+
    
     }
 }
