@@ -1,23 +1,17 @@
-﻿@model IEnumerable<MovieLibrary.Models.UserMovie>
+﻿@model IEnumerable<WishListDto>
 
 @{
     ViewData["Title"] = "Wishlist";
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Movie</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Movie.Title</td>
-                <td>@item.WatchStatus</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h1 class="mb-4">My Wishlist</h1>
+
+<ul class="list-group">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item d-flex justify-content-between">
+            <span>@item.MovieTitle</span>
+            <span class="badge bg-dark">@item.Status</span>
+        </li>
+    }
+</ul>
