@@ -15,10 +15,6 @@ namespace MovieLibrary.Controllers
         {
             _context = context;
         }
-
-        // =======================
-        // INDEX (ALL USERS)
-        // =======================
         public async Task<IActionResult> Index()
         {
             var movies = await _context.Movies
@@ -26,18 +22,13 @@ namespace MovieLibrary.Controllers
                 {
                     Id = m.Id,
                     Title = m.Title,
-                    Year = m.Year,
-                    ImageUrl = m.ImageUrl,
-                    Rating = m.Rating
+                    Year = m.ReleaseYear,
+                    ImageUrl = m.ImageUrl
                 })
                 .ToListAsync();
-
             return View(movies);
         }
 
-        // =======================
-        // DETAILS (ALL USERS)
-        // =======================
         public async Task<IActionResult> Details(int id)
         {
             var movie = await _context.Movies
@@ -47,7 +38,7 @@ namespace MovieLibrary.Controllers
                     Id = m.Id,
                     Title = m.Title,
                     Description = m.Description,
-                    Year = m.Year,
+                    Year = m.ReleaseYear,
                     ImageUrl = m.ImageUrl,
 
                     Genres = m.MovieGenres
@@ -55,15 +46,16 @@ namespace MovieLibrary.Controllers
                         .ToList(),
 
                     Actors = m.MovieActors
-                        .Select(ma => ma.Actor.Name)
+                        .Select(ma => ma.Actor.FullName)
                         .ToList(),
 
                     Reviews = m.Reviews
                         .Select(r => new ReviewDto
                         {
-                            Id = r.Id,
+                            UserName = r.User.UserName,
                             Rating = r.Rating,
-                            Comment = r.Comment
+                            Comment = r.Content,
+                            CreatedAt = r.CreatedAt
                         })
                         .ToList()
                 })
@@ -75,9 +67,6 @@ namespace MovieLibrary.Controllers
             return View(movie);
         }
 
-        // =======================
-        // CREATE (ADMIN ONLY)
-        // =======================
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -96,9 +85,8 @@ namespace MovieLibrary.Controllers
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                Year = dto.Year,
-                ImageUrl = dto.ImageUrl,
-                Rating = dto.Rating
+                ReleaseYear = dto.Year,
+                ImageUrl = dto.ImageUrl
             };
 
             _context.Movies.Add(movie);
