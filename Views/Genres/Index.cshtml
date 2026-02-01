@@ -1,28 +1,16 @@
-﻿@model IEnumerable<MovieLibrary.Models.Genre>
+﻿@model IEnumerable<GenreDto>
 
 @{
     ViewData["Title"] = "Genres";
 }
 
-<a asp-action="Create" class="btn btn-primary mb-3">Create Genre</a>
+<h1 class="mb-4">Genres</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Name</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<ul class="list-group">
+    @foreach (var genre in Model)
+    {
+        <li class="list-group-item">
+            @genre.Name
+        </li>
+    }
+</ul>
