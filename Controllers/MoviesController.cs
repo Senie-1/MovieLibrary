@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MovieLibrary.Data;
+
 using MovieLibrary.DTOs;
 using MovieLibrary.Models;
 
@@ -15,29 +13,48 @@ namespace MovieLibrary.Controllers
         {
             _context = context;
         }
-
-        // =======================
-        // INDEX (ALL USERS)
-        // =======================
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? genreId)
         {
-            var movies = await _context.Movies
+        
+            ViewBag.Genres = await _context.Genres
+                .Select(g => new
+                {
+                    g.Id,
+                    g.Name
+                })
+                .ToListAsync();
+
+            var moviesQuery = _context.Movies
+                .Include(m => m.MovieGenres)
+                .Include(m => m.Reviews)
+                .AsQueryable();
+
+            if (genreId.HasValue)
+            {
+                moviesQuery = moviesQuery
+                    .Where(m => m.MovieGenres
+                        .Any(mg => mg.GenreId == genreId.Value));
+            }
+
+            var movies = await moviesQuery
                 .Select(m => new MovieListDto
                 {
                     Id = m.Id,
                     Title = m.Title,
-                    Year = m.Year,
                     ImageUrl = m.ImageUrl,
-                    Rating = m.Rating
+                    Year = m.ReleaseYear,
+                    Rating = m.Reviews.Any()
+                        ? m.Reviews.Average(r => r.Rating)
+                        : 0
                 })
                 .ToListAsync();
 
             return View(movies);
         }
 
-        // =======================
-        // DETAILS (ALL USERS)
-        // =======================
+
+
+
         public async Task<IActionResult> Details(int id)
         {
             var movie = await _context.Movies
@@ -47,7 +64,7 @@ namespace MovieLibrary.Controllers
                     Id = m.Id,
                     Title = m.Title,
                     Description = m.Description,
-                    Year = m.Year,
+                    Year = m.ReleaseYear,
                     ImageUrl = m.ImageUrl,
 
                     Genres = m.MovieGenres
@@ -55,15 +72,15 @@ namespace MovieLibrary.Controllers
                         .ToList(),
 
                     Actors = m.MovieActors
-                        .Select(ma => ma.Actor.Name)
+                        .Select(ma => ma.Actor.FullName)
                         .ToList(),
 
                     Reviews = m.Reviews
                         .Select(r => new ReviewDto
                         {
-                            Id = r.Id,
+                            UserName = r.User.UserName,
                             Rating = r.Rating,
-                            Comment = r.Review
+                            Comment = r.Content
                         })
                         .ToList()
                 })
@@ -75,9 +92,6 @@ namespace MovieLibrary.Controllers
             return View(movie);
         }
 
-        // =======================
-        // CREATE (ADMIN ONLY)
-        // =======================
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {

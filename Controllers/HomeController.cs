@@ -15,12 +15,20 @@ namespace MovieLibrary.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var movies = await _context.Movies
-                .OrderByDescending(m => m.Rating)
-                .Take(8)
-                .ToListAsync();
+            ViewBag.NavGenres = await _context.Genres
+    .Select(g => new { g.Id, g.Name })
+    .ToListAsync();
 
-            return View(movies);
+            var topMovies = await _context.Movies
+            .OrderByDescending(m => m.Reviews.Any()
+                ? m.Reviews.Average(r => r.Rating)
+                : 0)
+            .Take(4)
+            .ToListAsync();
+
+            return View(topMovies);
+          
+
         }
     }
 }

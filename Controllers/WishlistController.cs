@@ -1,4 +1,7 @@
 ﻿
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
+using MovieLibrary.DTOs;
 using MovieLibrary.Models.Enums;
 
 namespace MovieLibrary.Controllers
@@ -15,9 +18,21 @@ namespace MovieLibrary.Controllers
   
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserMovies
+            var userId = _userManager.GetUserId(User);
+
+            var wishlist = await _context.UserMovies
+                .Where(um => um.UserId == userId)
                 .Include(um => um.Movie)
-                .ToListAsync());
+                .Select(um => new WishlistDto
+                {
+                    MovieId = um.Movie.Id,
+                    Title = um.Movie.Title,
+                    PosterUrl = um.Movie.ImageUrl,
+                    ReleaseYear = um.Movie.ReleaseYear
+                })
+                .ToListAsync();
+
+            return View(wishlist);
         }
 
     
