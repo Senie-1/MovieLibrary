@@ -14,10 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Repositories\Repository.cs" />
+    <None Include="Repositories\Implementations\Repository.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MovieLibrary.Data\MovieLibrary.Data.csproj" />
     <ProjectReference Include="..\MovieLibrary.Models\MovieLibrary.Models.csproj" />
   </ItemGroup>
 
