@@ -1,5 +1,8 @@
 ﻿
-    namespace MovieLibrary.Controllers
+using MovieLibrary.Data.Persistance;
+using MovieLibrary.Models.Domain.Entities;
+
+namespace MovieLibrary.Controllers
     {
         public class ActorsController : Controller
         {

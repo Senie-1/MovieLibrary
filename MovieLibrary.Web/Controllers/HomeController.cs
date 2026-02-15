@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieLibrary.Data;
+using MovieLibrary.Data.Persistance;
 
 namespace MovieLibrary.Controllers
 {

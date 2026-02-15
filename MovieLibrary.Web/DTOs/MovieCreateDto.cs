@@ -1,4 +1,6 @@
-﻿namespace MovieLibrary.DTOs
+﻿using MovieLibrary.Models.Domain.Entities;
+
+namespace MovieLibrary.DTOs
 {
     public class MovieCreateDto
     {

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using MovieLibrary.Data.Persistance;
 using MovieLibrary.DTOs;
-using MovieLibrary.Models.Enums;
+using MovieLibrary.Models.Domain.Entities;
+using MovieLibrary.Models.Domain.Enums;
 
 
 namespace MovieLibrary.Controllers
