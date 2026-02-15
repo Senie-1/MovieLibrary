@@ -28,13 +28,13 @@ namespace MovieLibrary.Controllers
         }
 
         
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var review = await _context.Reviews.FindAsync(id);
             if (review == null)
                 return NotFound();
 
-            int movieId = review.MovieId;
+            Guid movieId = review.MovieId;
             _context.Reviews.Remove(review);
             await _context.SaveChangesAsync();
 

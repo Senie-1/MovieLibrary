@@ -1,5 +1,26 @@
-﻿@model MovieLibrary.Models.Domain.Entities.Actor
+﻿@model MovieLibrary.Models.ViewModels.Actors.ActorViewModel
 
-<h2>@Model.FullName</h2>
+@{
+    ViewData["Title"] = "Actor Details";
+}
 
-<a asp-action="Index">Back</a>
+<h2 class="mb-4">Actor Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">@Model.FullName</h4>
+
+        <p class="card-text">
+            <strong>Birth Date:</strong>
+            @Model.BirthDate?.ToString("yyyy-MM-dd")
+        </p>
+
+        <p class="card-text">
+            <strong>Movies Count:</strong>
+            @Model.MoviesCount
+        </p>
+
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </div>
+</div>

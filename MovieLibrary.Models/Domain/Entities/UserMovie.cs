@@ -6,7 +6,7 @@ namespace MovieLibrary.Models.Domain.Entities
 {
     public class UserMovie
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
     
         public string UserId { get; set; }= null!;
@@ -14,7 +14,7 @@ namespace MovieLibrary.Models.Domain.Entities
 
         public WatchStatus WatchStatus { get; set; }
 
-        public int MovieId { get; set; }
+        public Guid MovieId { get; set; }
         public Movie Movie { get; set; } = null!;
 
        
