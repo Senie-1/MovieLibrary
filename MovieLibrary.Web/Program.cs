@@ -14,6 +14,7 @@ builder.Services.AddRazorPages();
 
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
