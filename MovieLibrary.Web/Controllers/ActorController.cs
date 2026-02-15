@@ -18,7 +18,7 @@ namespace MovieLibrary.Controllers
                 return View(await _context.Actors.ToListAsync());
             }
 
-            public async Task<IActionResult> Details(int id)
+            public async Task<IActionResult> Details(Guid id)
             {
                 var actor = await _context.Actors.FindAsync(id);
                 if (actor == null)
@@ -44,7 +44,7 @@ namespace MovieLibrary.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            public async Task<IActionResult> Edit(int id)
+            public async Task<IActionResult> Edit(Guid id)
             {
                 var actor = await _context.Actors.FindAsync(id);
                 if (actor == null)
@@ -65,7 +65,7 @@ namespace MovieLibrary.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            public async Task<IActionResult> Delete(int id)
+            public async Task<IActionResult> Delete(Guid id)
             {
                 var actor = await _context.Actors.FindAsync(id);
                 if (actor == null)

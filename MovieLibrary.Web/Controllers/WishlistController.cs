@@ -42,7 +42,7 @@ namespace MovieLibrary.Controllers
 
     
         [HttpPost]
-        public async Task<IActionResult> Add(int movieId, WatchStatus status)
+        public async Task<IActionResult> Add(Guid movieId, WatchStatus status)
         {
 
             var userId = _userManager.GetUserId(User);
@@ -61,7 +61,7 @@ namespace MovieLibrary.Controllers
 
        
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(int id, WatchStatus status)
+        public async Task<IActionResult> UpdateStatus(Guid id, WatchStatus status)
         {
             var item = await _context.UserMovies.FindAsync(id);
             if (item == null)
@@ -74,7 +74,7 @@ namespace MovieLibrary.Controllers
         }
 
       
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var item = await _context.UserMovies.FindAsync(id);
             if (item == null)

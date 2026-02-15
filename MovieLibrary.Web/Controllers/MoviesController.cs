@@ -14,7 +14,7 @@ namespace MovieLibrary.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int? genreId)
+        public async Task<IActionResult> Index(Guid? genreId)
         {
         
             ViewBag.Genres = await _context.Genres
@@ -56,7 +56,7 @@ namespace MovieLibrary.Controllers
 
 
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(Guid id)
         {
             var movie = await _context.Movies
                 .Where(m => m.Id == id)
