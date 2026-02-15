@@ -1,10 +1,28 @@
-﻿@model MovieLibrary.Models.Domain.Entities.Actor
+﻿@model MovieLibrary.Models.ViewModels.Actors.ActorCreateOrEditViewModel
 
-<h2>Create Actor</h2>
+@{
+    ViewData["Title"] = "Create Actor";
+}
+
+<h2 class="mb-4">Create Actor</h2>
 
 <form asp-action="Create" method="post">
-    <input asp-for="FullName" />
-    <button type="submit">Save</button>
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BirthDate" class="form-label"></label>
+        <input asp-for="BirthDate" type="date" class="form-control" />
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
 
-<a asp-action="Index">Back</a>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

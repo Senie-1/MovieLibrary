@@ -1,14 +1,22 @@
-﻿@model IEnumerable<MovieLibrary.Models.Domain.Entities.Actor>
+﻿@model IEnumerable<MovieLibrary.Models.ViewModels.Actors.ActorViewModel>
 
-<h2>Actors</h2>
+@{
+    ViewData["Title"] = "Actors";
+}
 
-<a asp-action="Create">Create Actor</a>
+<h2 class="mb-4">Actors</h2>
 
-<table>
-    <thead>
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Create New Actor
+</a>
+
+<table class="table table-striped table-bordered table-light">
+    <thead class="table-dark">
         <tr>
-            <th>Name</th>
-            <th></th>
+            <th>Full Name</th>
+            <th>Birth Date</th>
+            <th>Movies</th>
+            <th style="width: 200px;"></th>
         </tr>
     </thead>
     <tbody>
@@ -16,10 +24,12 @@
         {
             <tr>
                 <td>@actor.FullName</td>
+                <td>@actor.BirthDate?.ToString("yyyy-MM-dd")</td>
+                <td>@actor.MoviesCount</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@actor.Id">Details</a>
-                    <a asp-action="Edit" asp-route-id="@actor.Id">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@actor.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@actor.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@actor.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@actor.Id" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         }
