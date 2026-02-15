@@ -9,6 +9,8 @@
         public string Review { get; set; } = null!;
         public int Rating { get; set; }
 
+        public ICollection<MovieGenre> Genres { get; set; }
+        public ICollection<MovieActor> Actors { get; set; }
 
     }
 }

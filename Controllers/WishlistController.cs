@@ -1,18 +1,22 @@
-﻿
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using MovieLibrary.DTOs;
 using MovieLibrary.Models.Enums;
 
+
 namespace MovieLibrary.Controllers
 {
+    [Authorize]
     public class WishlistController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public WishlistController(ApplicationDbContext context)
+
+        public WishlistController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
   
@@ -25,10 +29,10 @@ namespace MovieLibrary.Controllers
                 .Include(um => um.Movie)
                 .Select(um => new WishlistDto
                 {
-                    MovieId = um.Movie.Id,
-                    Title = um.Movie.Title,
+                    Id = um.Movie.Id,
+                    MovieTitle = um.Movie.Title,
                     PosterUrl = um.Movie.ImageUrl,
-                    ReleaseYear = um.Movie.ReleaseYear
+                    
                 })
                 .ToListAsync();
 
@@ -39,9 +43,12 @@ namespace MovieLibrary.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(int movieId, WatchStatus status)
         {
+
+            var userId = _userManager.GetUserId(User);
             var item = new UserMovie
             {
                 MovieId = movieId,
+                UserId = userId,
                 WatchStatus = status
             };
 
