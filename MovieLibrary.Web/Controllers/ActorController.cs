@@ -77,10 +77,21 @@ namespace MovieLibrary.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var actor = await _actorService.GetByIdAsync(id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+
+            return View(actor);
+        }
+
         // POST: Actors/Delete/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var deleted = await _actorService.DeleteAsync(id);
 
