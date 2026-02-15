@@ -1,6 +1,4 @@
-﻿@using MovieLibrary.DTOs
-@model MovieCreateDto
-
+﻿@model MovieLibrary.Models.ViewModels.Movies.MovieCreateOrEditViewModel
 <h2>Add Movie</h2>
 
 <form asp-action="Create" method="post">
@@ -14,16 +12,26 @@
         <textarea asp-for="Description" class="form-control"></textarea>
     </div>
     <div class="mb-3">
-        <label asp-for="Genres"></label>
-        <textarea asp-for="Genres" class="form-control"></textarea>
+        <label>Genres</label>
+        <select asp-for="SelectedGenreIds"
+                asp-items="ViewBag.Genres"
+                multiple
+                class="form-control">
+        </select>
     </div>
+
     <div class="mb-3">
-        <label asp-for="Actors"></label>
-        <textarea asp-for="Actors" class="form-control"></textarea>
+        <label>Actors</label>
+        <select asp-for="SelectedActorIds"
+                asp-items="ViewBag.Actors"
+                multiple
+                class="form-control">
+        </select>
     </div>
+
     <div class="mb-3">
-        <label asp-for="Year"></label>
-        <input asp-for="Year" class="form-control" />
+        <label asp-for="ReleaseYear"></label>
+        <input asp-for="ReleaseYear" class="form-control" />
     </div>
 
     <div class="mb-3">
