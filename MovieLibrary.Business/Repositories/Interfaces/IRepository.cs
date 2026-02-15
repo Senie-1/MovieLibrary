@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieLibrary.Business.Repositories
+namespace MovieLibrary.Business.Repositories.Interfaces
 {
     /// <summary>
     /// Defines a generic repository interface for common data access operations

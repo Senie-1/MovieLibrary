@@ -1,3 +1,7 @@
+using MovieLibrary.Business.Repositories;
+using MovieLibrary.Business.Repositories.Interfaces;
+using MovieLibrary.Business.Services;
+using MovieLibrary.Business.Services.Implementations;
 using MovieLibrary.Data.Persistance;
 using MovieLibrary.Data.Seeds;
 
@@ -15,6 +19,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IActorService, ActorService>();
 
 var app = builder.Build();
 
