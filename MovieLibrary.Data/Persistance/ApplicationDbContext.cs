@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MovieLibrary.Models.Domain.Entities;
 namespace MovieLibrary.Data.Persistance
 {
     public class ApplicationDbContext : IdentityDbContext

@@ -1,4 +1,7 @@
-﻿namespace MovieLibrary.Data.Seeds
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MovieLibrary.Data.Seeds
 {
     public static class IdentitySeeder
     {

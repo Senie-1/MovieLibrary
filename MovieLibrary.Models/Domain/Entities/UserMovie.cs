@@ -2,7 +2,7 @@
 using MovieLibrary.Models.Domain.Entities;
 using MovieLibrary.Models.Domain.Enums;
 
-namespace MovieLibrary.Models
+namespace MovieLibrary.Models.Domain.Entities
 {
     public class UserMovie
     {
