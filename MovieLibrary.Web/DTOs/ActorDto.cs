@@ -2,8 +2,8 @@
 {
     public class ActorDto
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string PhotoUrl { get; set; }
+        public Guid Id { get; set; }    
+        public string Name { get; set; } = null!;
+        public string PhotoUrl { get; set; } = null!;
     }
 }
