@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace MovieLibrary.Models.ViewModels.Actors
 {
-    internal class ActorViewModel
+    public class ActorViewModel
     {
+        public int Id { get; set; }
+        public string FullName { get; set; } = null!;
+        public DateTime? BirthDate { get; set; }
+        public int MoviesCount { get; set; }
     }
 }
