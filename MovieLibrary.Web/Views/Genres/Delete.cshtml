@@ -1,0 +1,9 @@
+﻿@model MovieLibrary.Models.Domain.Entities.Genre
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <p>@Model.Name</p>
+    <button type="submit">Delete</button>
+</form>
+
+<a asp-action="Index">Back</a>

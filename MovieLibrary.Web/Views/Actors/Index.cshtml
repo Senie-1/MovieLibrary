@@ -1,0 +1,27 @@
+﻿@model IEnumerable<MovieLibrary.Models.Domain.Entities.Actor>
+
+<h2>Actors</h2>
+
+<a asp-action="Create">Create Actor</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model)
+        {
+            <tr>
+                <td>@actor.FullName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@actor.Id">Details</a>
+                    <a asp-action="Edit" asp-route-id="@actor.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@actor.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
