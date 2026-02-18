@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieLibrary.Business.Services;
 using MovieLibrary.Models.ViewModels.Actors;
 
@@ -38,6 +39,7 @@ namespace MovieLibrary.Controllers
         }
 
         // POST: Actors/Create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ActorCreateOrEditViewModel model)
@@ -51,6 +53,7 @@ namespace MovieLibrary.Controllers
         }
 
         // GET: Actors/Edit/{id}
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var actor = await _actorService.GetForEditAsync(id);
@@ -62,6 +65,7 @@ namespace MovieLibrary.Controllers
         }
 
         // POST: Actors/Edit/{id}
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, ActorCreateOrEditViewModel model)
@@ -76,7 +80,7 @@ namespace MovieLibrary.Controllers
 
             return RedirectToAction(nameof(Details), new { id });
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var actor = await _actorService.GetByIdAsync(id);
@@ -89,6 +93,7 @@ namespace MovieLibrary.Controllers
         }
 
         // POST: Actors/Delete/{id}
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

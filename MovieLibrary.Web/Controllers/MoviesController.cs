@@ -1,91 +1,38 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MovieLibrary.Data.Persistance;
-using MovieLibrary.DTOs;
-using MovieLibrary.Models;
-using MovieLibrary.Models.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MovieLibrary.Business.Services;
+using MovieLibrary.Business.Services.Interfaces;
+using MovieLibrary.Models.ViewModels.Movies;
 
 namespace MovieLibrary.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public MoviesController(ApplicationDbContext context)
+       
+        private readonly IMovieService _movieService;
+        private readonly IGenreService _genreService;
+        private readonly IActorService _actorService;
+        public MoviesController(
+    IMovieService movieService,
+    IGenreService genreService,
+    IActorService actorService)
         {
-            _context = context;
+            _movieService = movieService;
+            _genreService = genreService;
+            _actorService = actorService;
         }
-        public async Task<IActionResult> Index(Guid? genreId)
+        // GET: Movies
+        public async Task<IActionResult> Index()
         {
-        
-            ViewBag.Genres = await _context.Genres
-                .Select(g => new
-                {
-                    g.Id,
-                    g.Name
-                })
-                .ToListAsync();
-
-            var moviesQuery = _context.Movies
-                .Include(m => m.MovieGenres)
-                .Include(m => m.Reviews)
-                .AsQueryable();
-
-            if (genreId.HasValue)
-            {
-                moviesQuery = moviesQuery
-                    .Where(m => m.MovieGenres
-                        .Any(mg => mg.GenreId == genreId.Value));
-            }
-
-            var movies = await moviesQuery
-                .Select(m => new MovieListDto
-                {
-                    Id = m.Id,
-                    Title = m.Title,
-                    ImageUrl = m.ImageUrl,
-                    Year = m.ReleaseYear,
-                    Rating = m.Reviews.Any()
-                        ? m.Reviews.Average(r => r.Rating)
-                        : 0
-                })
-                .ToListAsync();
-
+            var movies = await _movieService.GetAllAsync();
             return View(movies);
         }
 
-
-
-
+        // GET: Movies/Details/{id}
         public async Task<IActionResult> Details(Guid id)
         {
-            var movie = await _context.Movies
-                .Where(m => m.Id == id)
-                .Select(m => new MovieDetailsDto
-                {
-                    Id = m.Id,
-                    Title = m.Title,
-                    Description = m.Description,
-                    Year = m.ReleaseYear,
-                    ImageUrl = m.ImageUrl,
-
-                    Genres = m.MovieGenres
-                        .Select(mg => mg.Genre.Name)
-                        .ToList(),
-
-                    Actors = m.MovieActors
-                        .Select(ma => ma.Actor.FullName)
-                        .ToList(),
-
-                    Reviews = m.Reviews
-                        .Select(r => new ReviewDto
-                        {
-                            UserName = r.User.UserName,
-                            Rating = r.Rating,
-                            Comment = r.Content
-                        })
-                        .ToList()
-                })
-                .FirstOrDefaultAsync();
+            var movie = await _movieService.GetByIdAsync(id);
 
             if (movie == null)
                 return NotFound();
@@ -93,31 +40,88 @@ namespace MovieLibrary.Controllers
             return View(movie);
         }
 
+        // GET: Movies/Create
         [Authorize(Roles = "Admin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Genres = new SelectList(
+                await _genreService.GetAllAsync(),
+                "Id",
+                "Name");
+
+            ViewBag.Actors = new SelectList(
+                await _actorService.GetAllAsync(),
+                "Id",
+                "FullName");
+
             return View();
         }
 
+        // POST: Movies/Create
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MovieCreateDto dto)
+        public async Task<IActionResult> Create(MovieCreateOrEditViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(dto);
+                return View(model);
 
-            var movie = new Movie
-            {
-                Title = dto.Title,
-                Description = dto.Description,
-                ReleaseYear = dto.Year,
-                ImageUrl = dto.PosterUrl,
-                Rating = dto.Rating
-            };
+            var id = await _movieService.CreateAsync(model);
 
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        // GET: Movies/Edit/{id}
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var movie = await _movieService.GetForEditAsync(id);
+
+            if (movie == null)
+                return NotFound();
+
+            return View(movie);
+        }
+
+        // POST: Movies/Edit/{id}
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, MovieCreateOrEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var updated = await _movieService.UpdateAsync(id, model);
+
+            if (!updated)
+                return NotFound();
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        // GET: Movies/Delete/{id}
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var movie = await _movieService.GetByIdAsync(id);
+
+            if (movie == null)
+                return NotFound();
+
+            return View(movie);
+        }
+
+        // POST: Movies/Delete/{id}
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var deleted = await _movieService.DeleteAsync(id);
+
+            if (!deleted)
+                return NotFound();
 
             return RedirectToAction(nameof(Index));
         }
