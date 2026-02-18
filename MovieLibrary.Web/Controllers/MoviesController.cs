@@ -23,9 +23,17 @@ namespace MovieLibrary.Controllers
             _actorService = actorService;
         }
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm)
         {
             var movies = await _movieService.GetAllAsync();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                movies = movies
+                    .Where(m => m.Title.ToLower().Contains(searchTerm.ToLower()))
+                    .ToList();
+            }
+
             return View(movies);
         }
 
@@ -64,11 +72,17 @@ namespace MovieLibrary.Controllers
         public async Task<IActionResult> Create(MovieCreateOrEditViewModel model)
         {
             if (!ModelState.IsValid)
+            {
+    
                 return View(model);
+            }
+
 
             var id = await _movieService.CreateAsync(model);
 
             return RedirectToAction(nameof(Details), new { id });
+            
+
         }
 
         // GET: Movies/Edit/{id}
@@ -125,5 +139,18 @@ namespace MovieLibrary.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> ByGenre(Guid genreId)
+        {
+            var movies = await _movieService.GetByGenreAsync(genreId);
+
+            var genre = await _genreService.GetByIdAsync(genreId);
+
+            ViewBag.GenreName = genre.Name;
+
+            return View(movies);
+        }
+
+
+
     }
 }

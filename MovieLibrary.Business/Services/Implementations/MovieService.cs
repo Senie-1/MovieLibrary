@@ -5,11 +5,8 @@ using MovieLibrary.Business.Repositories.Interfaces;
 using MovieLibrary.Models.Domain.Entities;
 using MovieLibrary.Models.ViewModels.Movies;
 using MovieLibrary.Business.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MovieLibrary.Business.Services.Implementations
 {
@@ -70,18 +67,28 @@ namespace MovieLibrary.Business.Services.Implementations
                     });
                 }
             }
-
-            if (model.SelectedActorIds != null)
+            if (!string.IsNullOrWhiteSpace(model.ActorNames))
             {
-                foreach (var actorId in model.SelectedActorIds)
+                var actorNames = model.ActorNames
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(a => a.Trim());
+
+                foreach (var name in actorNames)
                 {
+                    var actor = new Actor
+                    {
+                        Id = Guid.NewGuid(),
+                        FullName = name
+                    };
+
                     movie.MovieActors.Add(new MovieActor
                     {
                         MovieId = movie.Id,
-                        ActorId = actorId
+                        Actor = actor
                     });
                 }
             }
+
 
             await _repository.AddAsync(movie);
             await _repository.CommitAsync();
@@ -102,6 +109,17 @@ namespace MovieLibrary.Business.Services.Implementations
 
             return true;
         }
+        public async Task<List<MovieViewModel>> GetByGenreAsync(Guid genreId)
+        {
+            var movies = await _repository.GetAllAsync();
+
+            var filtered = movies
+                .Where(m => m.MovieGenres.Any(mg => mg.GenreId == genreId))
+                .ToList();
+
+            return _mapper.Map<List<MovieViewModel>>(filtered);
+        }
+
 
         public async Task<bool> DeleteAsync(Guid id)
         {

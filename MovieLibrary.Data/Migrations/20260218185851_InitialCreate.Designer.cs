@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieLibrary.Data.Persistance;
 
@@ -11,9 +12,11 @@ using MovieLibrary.Data.Persistance;
 namespace MovieLibrary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260218185851_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,28 +258,6 @@ namespace MovieLibrary.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("25a1b61e-301b-4b95-b233-ff55721dbde6"),
-                            Name = "Action"
-                        },
-                        new
-                        {
-                            Id = new Guid("4ac2a016-a782-4103-aff2-9b651f145d92"),
-                            Name = "Drama"
-                        },
-                        new
-                        {
-                            Id = new Guid("77680bbd-2bcb-42e1-91d7-ed69048b8af6"),
-                            Name = "Comedy"
-                        },
-                        new
-                        {
-                            Id = new Guid("7527dc1c-2c6d-420e-bcb9-03cad164d060"),
-                            Name = "Horror"
-                        });
                 });
 
             modelBuilder.Entity("MovieLibrary.Models.Domain.Entities.Movie", b =>
@@ -290,6 +271,7 @@ namespace MovieLibrary.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PosterUrl")

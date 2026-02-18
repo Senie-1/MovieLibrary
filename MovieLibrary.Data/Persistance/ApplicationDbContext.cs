@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieLibrary.Models.Domain.Entities;
+using System.Reflection.Emit;
 namespace MovieLibrary.Data.Persistance
 {
     public class ApplicationDbContext : IdentityDbContext
@@ -27,7 +28,17 @@ namespace MovieLibrary.Data.Persistance
 
             builder.Entity<MovieGenre>()
                 .HasKey(mg => new { mg.MovieId, mg.GenreId });
+
+            builder.Entity<Genre>().HasData(
+        new Genre { Id = Guid.NewGuid(), Name = "Action" },
+        new Genre { Id = Guid.NewGuid(), Name = "Drama" },
+        new Genre { Id = Guid.NewGuid(), Name = "Comedy" },
+        new Genre { Id = Guid.NewGuid(), Name = "Horror" }
+        );
+
         }
+        
+
     }
 }
 

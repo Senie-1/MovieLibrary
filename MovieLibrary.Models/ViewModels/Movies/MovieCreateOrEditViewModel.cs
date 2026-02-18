@@ -12,10 +12,6 @@ namespace MovieLibrary.Models.ViewModels.Movies
         public Guid? Id { get; set; }
 
         [Required]
-        [Range(1, 10)]
-        public int Rating { get; set; }
-
-        [Required]
         [MaxLength(200)]
         public string Title { get; set; } = null!;
 
@@ -36,7 +32,8 @@ namespace MovieLibrary.Models.ViewModels.Movies
         
         public List<Guid> SelectedGenreIds { get; set; } = new();
 
-        
-        public List<Guid> SelectedActorIds { get; set; } = new();
+
+        public string? ActorNames { get; set; }
+
     }
 }

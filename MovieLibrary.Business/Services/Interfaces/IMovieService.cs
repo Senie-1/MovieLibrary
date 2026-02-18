@@ -16,5 +16,7 @@ namespace MovieLibrary.Business.Services.Interfaces
         Task<bool> UpdateAsync(Guid id, MovieCreateOrEditViewModel model);
         Task<bool> DeleteAsync(Guid id);
         Task<bool> ExistsAsync(Guid id);
+        Task<List<MovieViewModel>> GetByGenreAsync(Guid genreId);
+
     }
 }

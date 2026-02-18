@@ -14,7 +14,8 @@
         public ICollection<MovieGenre> MovieGenres { get; set; } = new List<MovieGenre>();
         public ICollection<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+
 
         public ICollection<UserMovie> UserMovies { get; set; } = new List<UserMovie>();
 

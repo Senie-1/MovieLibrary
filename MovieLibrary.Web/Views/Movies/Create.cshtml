@@ -2,6 +2,8 @@
 <h2>Add Movie</h2>
 
 <form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
     <div class="mb-3">
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" />
@@ -22,11 +24,11 @@
 
     <div class="mb-3">
         <label>Actors</label>
-        <select asp-for="SelectedActorIds"
-                asp-items="ViewBag.Actors"
-                multiple
-                class="form-control">
-        </select>
+        <div class="form-group">
+            <input asp-for="ActorNames" class="form-control" />
+            <span asp-validation-for="ActorNames" class="text-danger"></span>
+        </div>
+
     </div>
 
     <div class="mb-3">
@@ -38,7 +40,8 @@
         <label asp-for="PosterUrl"></label>
         <input asp-for="PosterUrl" class="form-control" />
     </div>
+    <button type="submit" class="btn btn-success">Save</button>
 
-    <button class="btn btn-success">Save</button>
+
 </form>
 
