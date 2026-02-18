@@ -6,6 +6,7 @@ using MovieLibrary.Business.Services.Interfaces;
 using MovieLibrary.Data.Persistance;
 using MovieLibrary.Data.Seeds;
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
@@ -22,7 +23,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IActorService, ActorService>();
-builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IGenreService, GenreService>();
 
 var app = builder.Build();
 
