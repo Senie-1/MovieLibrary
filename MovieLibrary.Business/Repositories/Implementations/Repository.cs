@@ -78,5 +78,10 @@ namespace MovieLibrary.Business.Repositories
 		{
 			return _dbSet.AsQueryable();
 		}
+
+		public object Where(Func<object, bool> value)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

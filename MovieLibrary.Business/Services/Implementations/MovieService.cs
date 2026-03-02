@@ -111,13 +111,12 @@ namespace MovieLibrary.Business.Services.Implementations
         }
         public async Task<List<MovieViewModel>> GetByGenreAsync(Guid genreId)
         {
-            var movies = await _repository.GetAllAsync();
-
-            var filtered = movies
+            var movies = await _repository
+                .Query()
                 .Where(m => m.MovieGenres.Any(mg => mg.GenreId == genreId))
-                .ToList();
+                .ToListAsync();
 
-            return _mapper.Map<List<MovieViewModel>>(filtered);
+            return _mapper.Map<List<MovieViewModel>>(movies);
         }
 
 

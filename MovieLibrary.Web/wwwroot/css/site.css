@@ -10,22 +10,25 @@ a {
     text-decoration: none;
 }
 
-.card {
-    background-color: #1c1c1c;
+.movie-card {
+    background: #111;
     border: none;
-    color: white;
-    transition: transform 0.2s;
+    transition: 0.25s;
 }
 
-    .card:hover {
-        transform: scale(1.03);
+    .movie-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     }
 
-.card-footer {
-    background-color: transparent;
-    border-top: none;
+.movie-poster {
+    height: 350px;
+    object-fit: cover;
 }
 
+.card-title {
+    color: #fff;
+}
 .btn-dark {
     background-color: #f5c518;
     color: black;
@@ -72,3 +75,15 @@ a {
     color: #f5c518 !important;
 }
 
+.dropdown-menu {
+    background-color: #1b1b2f;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+    .dropdown-item:hover {
+        background-color: #ffc107;
+        color: black;
+    }

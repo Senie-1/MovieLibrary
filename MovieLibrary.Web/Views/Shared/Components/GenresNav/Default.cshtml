@@ -1,0 +1,17 @@
+@model IEnumerable<MovieLibrary.Models.ViewModels.Genres.GenreViewModel>
+
+<ul class="dropdown-menu" aria-labelledby="genresDropdown">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var genre in Model)
+        {
+            <li>
+                <a class="dropdown-item" asp-controller="Movies" asp-action="ByGenre" asp-route-genreId="@genre.Id">@genre.Name</a>
+            </li>
+        }
+    }
+    else
+    {
+        <li><span class="dropdown-item-text">No genres</span></li>
+    }
+</ul>

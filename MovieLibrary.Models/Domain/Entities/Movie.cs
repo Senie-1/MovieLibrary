@@ -16,8 +16,8 @@
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
         public string? ImageUrl { get; set; }
 
-
         public ICollection<UserMovie> UserMovies { get; set; } = new List<UserMovie>();
 
+      
     }
 }

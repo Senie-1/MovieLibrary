@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MovieLibrary.Business.Services;
 using MovieLibrary.Business.Services.Interfaces;
 using MovieLibrary.Models.ViewModels.Movies;
@@ -23,17 +24,9 @@ namespace MovieLibrary.Controllers
             _actorService = actorService;
         }
         // GET: Movies
-        public async Task<IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index()
         {
             var movies = await _movieService.GetAllAsync();
-
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                movies = movies
-                    .Where(m => m.Title.ToLower().Contains(searchTerm.ToLower()))
-                    .ToList();
-            }
-
             return View(movies);
         }
 
@@ -142,12 +135,7 @@ namespace MovieLibrary.Controllers
         public async Task<IActionResult> ByGenre(Guid genreId)
         {
             var movies = await _movieService.GetByGenreAsync(genreId);
-
-            var genre = await _genreService.GetByIdAsync(genreId);
-
-            ViewBag.GenreName = genre.Name;
-
-            return View(movies);
+            return View("Index", movies);
         }
 
 
