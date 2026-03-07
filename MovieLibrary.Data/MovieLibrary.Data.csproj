@@ -17,4 +17,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\MovieLibrary.Models\MovieLibrary.Models.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
 </Project>
