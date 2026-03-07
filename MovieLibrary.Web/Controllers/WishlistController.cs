@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieLibrary.Data.Persistance;
 using MovieLibrary.DTOs;
 using MovieLibrary.Models.Domain.Entities;
@@ -13,14 +16,12 @@ namespace MovieLibrary.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-
         public WishlistController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-  
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
@@ -30,37 +31,52 @@ namespace MovieLibrary.Controllers
                 .Include(um => um.Movie)
                 .Select(um => new WishlistDto
                 {
-                    Id = um.Movie.Id,
+                    Id = um.Id,
                     MovieTitle = um.Movie.Title,
                     PosterUrl = um.Movie.ImageUrl,
-                    
+                    WatchStatus = um.WatchStatus.ToString()
                 })
                 .ToListAsync();
 
             return View(wishlist);
         }
 
-    
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Guid movieId, WatchStatus status)
         {
-
             var userId = _userManager.GetUserId(User);
-            var item = new UserMovie
-            {
-                MovieId = movieId,
-                UserId = userId,
-                WatchStatus = status
-            };
+            if (string.IsNullOrEmpty(userId))
+                return Challenge();
 
-            _context.UserMovies.Add(item);
+            // Prevent duplicates: update existing entry if present
+            var existing = await _context.UserMovies
+                .FirstOrDefaultAsync(um => um.UserId == userId && um.MovieId == movieId);
+
+            if (existing != null)
+            {
+                existing.WatchStatus = status;
+                _context.UserMovies.Update(existing);
+            }
+            else
+            {
+                var item = new UserMovie
+                {
+                    MovieId = movieId,
+                    UserId = userId,
+                    WatchStatus = status
+                };
+
+                await _context.UserMovies.AddAsync(item);
+            }
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-       
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(Guid id, WatchStatus status)
         {
             var item = await _context.UserMovies.FindAsync(id);
@@ -73,7 +89,6 @@ namespace MovieLibrary.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-      
         public async Task<IActionResult> Delete(Guid id)
         {
             var item = await _context.UserMovies.FindAsync(id);
