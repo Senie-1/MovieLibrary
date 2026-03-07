@@ -36,11 +36,16 @@
         <input asp-for="ReleaseYear" class="form-control" />
     </div>
 
-    <div class="mb-3">
-        <label asp-for="PosterUrl"></label>
-        <input asp-for="PosterUrl" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-success">Save</button>
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <label>Movie Poster</label>
+            <input type="file" name="ImageFile" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Movie</button>
+
+    </form>
 
 
 </form>

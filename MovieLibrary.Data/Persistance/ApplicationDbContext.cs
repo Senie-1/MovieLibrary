@@ -18,7 +18,7 @@ namespace MovieLibrary.Data.Persistance
         public DbSet<MovieActor> MovieActors { get; set; }
         public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<UserMovie> UserMovies { get; set; }
-
+        public DbSet<Wishlist> Wishlists { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -49,19 +49,31 @@ namespace MovieLibrary.Controllers
 
         // GET: Movies/Create
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(MovieCreateOrEditViewModel model, IFormFile ImageFile)
         {
-            ViewBag.Genres = new SelectList(
-                await _genreService.GetAllAsync(),
-                "Id",
-                "Name");
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Genres = new SelectList(await _genreService.GetAllAsync(), "Id", "Name");
+                ViewBag.Actors = new SelectList(await _actorService.GetAllAsync(), "Id", "FullName");
+                return View(model);
+            }
 
-            ViewBag.Actors = new SelectList(
-                await _actorService.GetAllAsync(),
-                "Id",
-                "FullName");
+            if (ImageFile != null)
+            {
+                var fileName = Path.GetFileName(ImageFile.FileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
 
-            return View();
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await ImageFile.CopyToAsync(stream);
+                }
+
+                model.ImageUrl = "/images/" + fileName;
+            }
+
+            var id = await _movieService.CreateAsync(model);
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         // POST: Movies/Create
@@ -109,16 +121,18 @@ namespace MovieLibrary.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        // GET: Movies/Delete/{id}
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var movie = await _movieService.GetByIdAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
 
             if (movie == null)
                 return NotFound();
 
-            return View(movie);
+            _context.Movies.Remove(movie);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Movies/Delete/{id}
@@ -160,6 +174,8 @@ namespace MovieLibrary.Controllers
 
             return Ok();
         }
-    }
-}
+        
+
+
+    } }
 

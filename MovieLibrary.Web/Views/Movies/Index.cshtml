@@ -64,7 +64,17 @@
                        asp-route-id="@movie.Id"
                        class="btn btn-outline-warning btn-sm w-100">
                         View Details
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Movies"
+                               asp-action="Delete"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-danger">
+                                🗑 Delete
+                            </a>
+                        }
                     </a>
+                    
                 </div>
             </div>
         </div>

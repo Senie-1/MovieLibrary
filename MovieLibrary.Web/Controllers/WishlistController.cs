@@ -43,11 +43,16 @@ namespace MovieLibrary.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Add(Guid movieId, WatchStatus status)
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
-                return Challenge();
+            {
+                // user not signed in -> redirect to identity login page preserving returnUrl to movie details
+                var returnUrl = Url.Action("Details", "Movies", new { id = movieId });
+                return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
+            }
 
             // Prevent duplicates: update existing entry if present
             var existing = await _context.UserMovies
@@ -72,7 +77,7 @@ namespace MovieLibrary.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Movies", new { id = movieId });
         }
 
         [HttpPost]
