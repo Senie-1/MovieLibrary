@@ -49,40 +49,8 @@ namespace MovieLibrary.Controllers
 
         // GET: Movies/Create
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create()
-        {
-            // We only need to prepare the dropdowns here
-            ViewBag.Genres = new SelectList(await _genreService.GetAllAsync(), "Id", "Name");
-            ViewBag.Actors = new SelectList(await _actorService.GetAllAsync(), "Id", "FullName");
-            return View(new MovieCreateOrEditViewModel());
-        }
-
-        // POST: Movies/Create
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MovieCreateOrEditViewModel model, IFormFile ImageFile)
         {
-            if (ImageFile != null)
-            {
-                // 1. Ensure the directory exists
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-                if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
-
-                // 2. Create a unique filename to prevent overwriting
-                var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ImageFile.FileName);
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                // 3. Save the file
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await ImageFile.CopyToAsync(stream);
-                }
-
-                // 4. Set the URL for the database (relative path)
-                model.ImageUrl = "/images/" + fileName;
-            }
-
             if (!ModelState.IsValid)
             {
                 ViewBag.Genres = new SelectList(await _genreService.GetAllAsync(), "Id", "Name");
@@ -90,9 +58,40 @@ namespace MovieLibrary.Controllers
                 return View(model);
             }
 
+            if (ImageFile != null)
+            {
+                var fileName = Path.GetFileName(ImageFile.FileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await ImageFile.CopyToAsync(stream);
+                }
+
+                model.ImageUrl = "/images/" + fileName;
+            }
+
             var id = await _movieService.CreateAsync(model);
+
             return RedirectToAction(nameof(Details), new { id });
         }
+
+        // POST: Movies/Create
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(MovieCreateOrEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var id = await _movieService.CreateAsync(model);
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
         // GET: Movies/Edit/{id}
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid id)
