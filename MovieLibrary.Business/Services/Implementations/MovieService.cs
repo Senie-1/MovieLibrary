@@ -5,7 +5,6 @@ using MovieLibrary.Business.Repositories.Interfaces;
 using MovieLibrary.Models.Domain.Entities;
 using MovieLibrary.Models.ViewModels.Movies;
 using MovieLibrary.Business.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace MovieLibrary.Business.Services.Implementations

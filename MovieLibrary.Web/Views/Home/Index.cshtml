@@ -13,7 +13,7 @@
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card bg-dark text-light h-100 shadow">
 
-                <img src="@movie.ImageUrl" class="card-img-top" style="height:350px; object-fit:cover;" />
+                <img src="@(movie.ImageUrl ?? "/images/no-image.png")" class="card-img-top" style="height:350px; object-fit:cover;" />
 
                 <div class="card-body">
                     <h5 class="card-title text-warning">@movie.Title</h5>
