@@ -46,9 +46,21 @@ namespace MovieLibrary.Controllers
 
             return View(movie);
         }
-
         // GET: Movies/Create
         [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Genres = new SelectList(await _genreService.GetAllAsync(), "Id", "Name");
+            ViewBag.Actors = new SelectList(await _actorService.GetAllAsync(), "Id", "FullName");
+
+            return View();
+        }
+
+        // POST: Movies/Create
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MovieCreateOrEditViewModel model, IFormFile ImageFile)
         {
             if (!ModelState.IsValid)
@@ -69,22 +81,6 @@ namespace MovieLibrary.Controllers
                 }
 
                 model.ImageUrl = "/images/" + fileName;
-            }
-
-            var id = await _movieService.CreateAsync(model);
-
-            return RedirectToAction(nameof(Details), new { id });
-        }
-
-        // POST: Movies/Create
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MovieCreateOrEditViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
             }
 
             var id = await _movieService.CreateAsync(model);

@@ -18,7 +18,6 @@ namespace MovieLibrary.Models.ViewModels.Movies
 
         public int ReleaseYear { get; set; }
 
-        public string? PosterUrl { get; set; }
 
         public string? ImageUrl { get; set; }
 

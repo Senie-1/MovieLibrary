@@ -23,10 +23,6 @@ namespace MovieLibrary.Models.ViewModels.Movies
         [Range(1900, 2100)]
         public int ReleaseYear { get; set; }
 
-        [Url]
-        public string? PosterUrl { get; set; }
-
-        [Url]
         public string? ImageUrl { get; set; }
 
         
