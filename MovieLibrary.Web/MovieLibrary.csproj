@@ -29,8 +29,4 @@
     <ProjectReference Include="..\MovieLibrary.Models\MovieLibrary.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
-
 </Project>

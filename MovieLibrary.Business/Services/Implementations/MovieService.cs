@@ -40,6 +40,7 @@ namespace MovieLibrary.Business.Services.Implementations
                 .AsNoTracking()
                 .ProjectTo<MovieViewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
+         
         }
 
         public async Task<MovieCreateOrEditViewModel?> GetForEditAsync(Guid id)
