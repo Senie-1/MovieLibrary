@@ -19,7 +19,10 @@
                     <h5 class="card-title text-warning">@movie.Title</h5>
 
                     <p class="mb-1">
-                        <strong>Genre:</strong> @movie.Genres
+                        <strong>Genre:</strong>
+                    <p>
+                        @string.Join(", ", movie.Genres)
+                    </p>
                     </p>
 
                     <p class="mb-1">
